@@ -1,3 +1,2 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-require("./testImport");
+// This is the entry point for the packages.
