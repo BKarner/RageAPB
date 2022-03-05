@@ -1,0 +1,1 @@
+start /d "../gamemode" ragemp-server.exe
