@@ -1,6 +1,7 @@
 ﻿Notes/OneNote_RecycleBin
 src/.idea
-src/node_modules
-src/packages
 code/.idea
 code/node_modules
+gamemode/client_packages/**/*
+gamemode/packages/**/*
+code/src/**/*.js
