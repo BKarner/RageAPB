@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "watch:build": "tsc -w",
     "run:server": "run.bat"
   },
   "author": "",
