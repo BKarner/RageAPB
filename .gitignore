@@ -2,6 +2,6 @@
 src/.idea
 code/.idea
 code/node_modules
-gamemode/client_packages
-gamemode/packages
+gamemode/client_packages/**/*
+gamemode/packages/**/*
 code/src/**/*.js
