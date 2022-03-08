@@ -1,2 +1,0 @@
-"use strict";
-// This is the entry point for the packages.
