@@ -4,9 +4,9 @@
   "description": "APB Reloaded in RageMP",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --b",
-    "watch:build": "tsc --b --w",
-    "run:server": "run.bat"
+    "build": "tsc --b src/client_packages && tsc --b src/packages",
+    "run:server": "run.bat",
+    "clean": "tsc --b --clean"
   },
   "author": "",
   "license": "ISC",
