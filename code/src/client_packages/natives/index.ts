@@ -1,5 +1,3 @@
-import * as player from './player';
-
 /**
  * Call any GTA: V native and return what it returns.
  *
