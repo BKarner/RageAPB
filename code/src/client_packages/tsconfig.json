@@ -1,0 +1,12 @@
+{
+  "compileOnSave": true,
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "types": ["@types/ragemp-c"],
+    "outDir": "../../../gamemode/client_packages",          /* Redirect output structure to the directory. */
+  },
+  "include": [
+    "./**/*"
+  ]
+}
