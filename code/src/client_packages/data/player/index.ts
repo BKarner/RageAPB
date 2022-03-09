@@ -25,22 +25,6 @@ class Player {
             Player.local = this;
         }
     }
-
-    testMethod() : void {
-        mp.gui.chat.push('THIS IS A TEST METHOD');
-    }
 }
 
 export default Player;
-
-// DEBUG: DELETE.
-mp.events.add('playerCommand', (cmd: string) => {
-    const args = cmd.split(/[ ]+/);
-    const commandName = args[0];
-
-    args.shift();
-
-    if (commandName === "test") {
-        Player.local?.testMethod();
-    }
-})
