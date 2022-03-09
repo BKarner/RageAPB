@@ -1,4 +1,5 @@
 import {NATIVES} from './consts';
+import {invoke, warn} from '../index';
 
 /**
  * Get the number of player's currently in the team.
@@ -7,7 +8,7 @@ import {NATIVES} from './consts';
  * @param team The id of the team we wish to check.
  */
 export function GetNumberOfPlayersInTeam(team: number): number {
-    return mp.game.invoke(NATIVES.GetNumberOfPlayersInTeam, team);
+    return invoke(NATIVES.GetNumberOfPlayersInTeam, [team]);
 }
 
 /**
@@ -17,7 +18,19 @@ export function GetNumberOfPlayersInTeam(team: number): number {
  * @param player The Player's object.
  */
 export function GetPlayerTeam(player: PlayerMp): number {
-    return mp.game.invoke(NATIVES.GetPlayerTeam, player);
+    return invoke(NATIVES.GetPlayerTeam, [player]);
+}
+
+/**
+ * Get whether or not the player is climbing.
+ *
+ * @warning Exists via PlayerMp::isClimbing
+ * @link https://natives.altv.mp/#/0x95E8F73DC65EFB9C
+ * @param player The Player's object.
+ */
+export function IsPlayerClimbing(player: PlayerMp): boolean {
+    warn('IsPlayerClimbing', 'Exists via PlayerMp::isClimbing');
+    return invoke(NATIVES.IsPlayerClimbing, [player]);
 }
 
 /**
@@ -28,5 +41,5 @@ export function GetPlayerTeam(player: PlayerMp): number {
  * @param team The ID of the team we wish to set them to.
  */
 export function SetPlayerTeam(player: PlayerMp, team: number): void {
-    mp.game.invoke(NATIVES.SetPlayerTeam, player, team);
+    return invoke(NATIVES.SetPlayerTeam, [player, team]);
 }

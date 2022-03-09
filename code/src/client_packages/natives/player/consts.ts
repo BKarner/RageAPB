@@ -5,7 +5,7 @@ export const NATIVES: { [key: string]: string } = {
     // State.
     'SetPlayerControl': '0x8D32347D6D4C40A2', // TODO: Needs testing/implementation.
     'IsPlayerControlOn': '0x49C32D60007AFA47', // TODO: Needs testing/implementation.
-    'IsPlayerClimbing': '0x95E8F73DC65EFB9C', // TODO: Needs testing/implementation.
+    'IsPlayerClimbing': '0x95E8F73DC65EFB9C',
     'IsPlayerTargettingAnything': '0x78CFE51896B6B8A4', // TODO: Needs testing/implementation.
     'IsPlayerTargettingEntity': '0x7912F7FC4F6264B6', // TODO: Needs testing/implementation.
     'GetPlayerTargetEntity': '0x13EDE1A5DBF797C9', // TODO: Needs testing/implementation.
