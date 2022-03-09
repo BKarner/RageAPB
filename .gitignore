@@ -2,6 +2,7 @@
 src/.idea
 code/.idea
 code/node_modules
+code/.rollup.cache
 gamemode/client_packages/**/*
 gamemode/client_packages/.listcache
 gamemode/packages/**/*
