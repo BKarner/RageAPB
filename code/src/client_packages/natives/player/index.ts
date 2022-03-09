@@ -1,18 +1,32 @@
 import {NATIVES} from './consts';
 
 /**
- * Get the Player's Team ID
+ * Get the number of player's currently in the team.
+ *
+ * @link https://natives.altv.mp/#/0x1FC200409F10E6F1
+ * @param team The id of the team we wish to check.
  */
-export function GetPlayerTeam(): number {
-    return mp.game.invoke(NATIVES.GetPlayerTeam);
+export function GetNumberOfPlayersInTeam(team: number): number {
+    return mp.game.invoke(NATIVES.GetNumberOfPlayersInTeam, team);
+}
+
+/**
+ * Get the Player's Team ID
+ *
+ * @link https://natives.altv.mp/#/0x37039302F4E0A008
+ * @param player The Player's object.
+ */
+export function GetPlayerTeam(player: PlayerMp): number {
+    return mp.game.invoke(NATIVES.GetPlayerTeam, player);
 }
 
 /**
  * Set the Player's Team ID
  *
+ * @link https://natives.altv.mp/#/0x0299FA38396A4940
  * @param player The Player's object.
  * @param team The ID of the team we wish to set them to.
  */
 export function SetPlayerTeam(player: PlayerMp, team: number): void {
-    mp.game.invoke(NATIVES.SetPlayerTeam, team);
+    mp.game.invoke(NATIVES.SetPlayerTeam, player, team);
 }
