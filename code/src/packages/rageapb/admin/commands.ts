@@ -8,7 +8,7 @@ mp.events.addCommand('aveh', createVehicle);
 
 // Creates a weapon via admin command.
 function createWeapon(player: PlayerMp, _: string, wepId: string, ammo: string) {
-    console.log(mp.joaat(wepId), Number(ammo));
+    console.log(mp.joaat("weapon_"+wepId), Number(ammo));
     player.giveWeapon(mp.joaat(wepId), Number(ammo))    
 }
 mp.events.addCommand('awep', createWeapon);
