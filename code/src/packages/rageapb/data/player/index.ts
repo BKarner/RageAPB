@@ -1,26 +1,26 @@
 import './events';
 
-import Team from '../team';
+import * as rpc from 'rage-rpc';
 
 import {TEAMS} from '../team/consts';
-import {SetPlayerTeam} from '../../natives/player';
+import Team from '../team';
 
 /**
  * Handles the Player class as appropriate.
  */
 class Player {
-    public static pool: Array<Player> = [];
+    public static pool: Array<Player|null> = [];
     public static local: Player;
 
     public readonly isClient: boolean = false;
     public readonly ragePlayer: PlayerMp;
 
-    private readonly _serverID?: number;
+    private readonly _serverID: number;
     private _team: number;
 
-    constructor(ragePlayer: PlayerMp, client: boolean) {
-        // Firstly, determine whether or not we're the client.
-        this.isClient = client;
+    constructor(ragePlayer: PlayerMp, serverID: number) {
+        // Assign a server ID to the player.
+        this._serverID = serverID;
 
         // Assign our rage handle so that we can call any rage player stuff.
         this.ragePlayer = ragePlayer;
@@ -29,7 +29,7 @@ class Player {
         this._team = TEAMS.PASSIVE;
 
         // Add this to our current player pool.
-        Player.pool.push(this);
+        Player.pool[serverID] = this;
 
         // If we're the local player, add it to the static so we can easily reference the current player.
         if (this.isClient) {
@@ -64,8 +64,24 @@ class Player {
 
         // Add our team to the new team.
         this._team = id;
-        SetPlayerTeam(this.ragePlayer, id);
         newTeam.add(this);
+
+        // Send our event to the client.
+        rpc.triggerClient(this.ragePlayer, 'ServerSetTeam', [this.ragePlayer.id, this._team]);
+    }
+
+    /**
+     * Get a new unique server ID.
+     * @constructor
+     */
+    static GetNewServerID(): number {
+        Player.pool.forEach((player: Player|null, index: number) => {
+            if (!player) {
+                return index;
+            }
+        });
+
+        return 0;
     }
 }
 
