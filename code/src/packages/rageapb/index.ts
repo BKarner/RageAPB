@@ -1,4 +1,3 @@
-// This is the entry point for the packages.
-console.log('Initialised');
+import './admin'
 
-import './admin/commands'
+// This is the entry point for the packages.

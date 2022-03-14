@@ -28,7 +28,7 @@ function teleportToLocation(player: PlayerMp, _: string, x: string, y: string, z
     if (!isNaN(parseFloat(x)) && !isNaN(parseFloat(y)) && !isNaN(parseFloat(z)))
         player.position = new mp.Vector3(parseFloat(x),parseFloat(y),parseFloat(z));
     else
-        player.outputChatBox(`Command syntax: /tp [x] [y] [z]`);
+        player.outputChatBox(`Command syntax: /tpto [x] [y] [z]`);
 }
 mp.events.addCommand('tpto', teleportToLocation);
 
