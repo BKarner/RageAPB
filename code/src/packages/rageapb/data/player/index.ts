@@ -108,6 +108,11 @@ class Player {
     /**
      * Search for a Player or Players given any identifier.
      *
+     * @example const [playerA, playerB] = <Array<Player>> Player.Search([playerAName, playerBID]);
+     *  - Will return playerA and playerB as new variables. Either a Player object, undefined or null.
+     * @example const player = <Player> Player.Search(playerName);
+     *  - Will return player as a new variable. Either a Player object, undefined or null.
+     *
      * @param searchParams Either an array of parameters or a single parameter.
      * @returns player(s) Multiple Players or a single Player depending on whether searchParams is an array or not.
      */

@@ -57,7 +57,7 @@ class Team {
 }
 
 mp.events.addCommand('setteam', (player: PlayerMp, team: string) => {
-    const p = Player.pool.find((e) => e?.ragePlayer === player);
+    const p = <Player>Player.Search(player);
 
     if (p) {
         p.team = Number(team);
