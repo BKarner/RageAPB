@@ -34,7 +34,11 @@ type WeaponSettings = {
      *
      * @example - 'extended': 16, because the extended magazine holds 16 rounds.
      */
-    magazineSize: {[key: string]: number},
+    magazineSize: {
+        stock: number,
+        extended?: number,
+        drum?: number
+    },
 
     /**
      * How much ammo can the player carry without resupplying.
@@ -58,6 +62,7 @@ type WeaponSettings = {
  * All the weapon details we need.
  */
 export const WEAPONS: {[key: string]: WeaponSettings} = {
+    // Handguns.
     'PISTOL': {
         'name': 'pistol',
         'id': 'weapon_pistol',
@@ -80,6 +85,32 @@ export const WEAPONS: {[key: string]: WeaponSettings} = {
             }
         },
         'reserveAmmo': 192 // (stock * extended)
+    },
+
+    // ARs.
+    'ASSAULT_RIFLE': {
+        'name': 'assault rifle',
+        'id': 'weapon_assaultrifle',
+        'hash': 0,
+        'magazineSize': {
+            'stock': 30,
+            'extended': 60,
+            'drum': 100
+        },
+        'gameStats': {
+            'damage': {
+                'default': 30,
+                'limb': 15,
+                'armor': 22.5,
+                'headshot': 51
+            },
+            'fireRate': 0.158, // (380 rounds per minute)
+            'range': {
+                'meters': 120,
+                'feet': 394
+            }
+        },
+        'reserveAmmo': 1800
     }
 }
 
