@@ -1,17 +1,7 @@
 import './commands';
+import {GroupInvite} from './types';
 
 import Player from '../player';
-
-type GroupInvite = {
-    player: Player,
-    timestamp: number
-}
-
-export type PlayerGroupInvite = {
-    inviter: Player,
-    group: Group,
-    timestamp: number
-}
 
 /**
  * Handles a player group.
@@ -53,7 +43,7 @@ class Group {
 
         // If the player that is being removed is the leader, pick a new leader.
         if (player === this.leader) {
-            this._replaceLeader();
+            this.replaceLeader();
         }
 
         // If the number of members is 0, remove the group.
@@ -63,10 +53,48 @@ class Group {
     }
 
     /**
-     * Remove all members of the group.
+     * Replace the current leader with the new leader.
+     *
+     * @param newLeader The player we want to set as the new leader.
+     */
+    replaceLeader(newLeader?: Player) {
+        // If we've tried to select a leader.
+        if (newLeader) {
+            // If the player exists in the group, assign leadership.
+            if (this.members.indexOf(newLeader) !== -1) {
+                this.leader = newLeader;
+            } else {
+                console.log('[GROUP] Somehow trying to make someone a leader of a group they\'re not in.');
+            }
+        } else {
+            // The new leader is the first member to join the group.
+            this.leader = this.members[0];
+        }
+    }
+
+    /**
+     * Remove all members of the group and cancel all invites.
      */
     disband() {
-        // TODO: Remove all members.
+        this.members.forEach(( member: Player ) => {
+            this.remove(member);
+        });
+    }
+
+    /**
+     * Cancel a group's player invite.
+     *
+     * @param player The player who we previously invited.
+     */
+    cancelInvite(player: Player) {
+        const invite = this.invites.findIndex((e) => e.player === player);
+
+        if (invite !== -1) {
+            this.invites.slice(invite, 1);
+
+            const playerInvite = player.groupInvites.findIndex((p) => p.group === this);
+            player.groupInvites.slice(playerInvite, 1);
+        }
     }
 
     /**
@@ -75,7 +103,7 @@ class Group {
      * @param player The player we want to invite.
      * @param timestamp The unix timestamp the invite was sent.
      */
-    _invite(player: Player, timestamp: number) {
+    invite(player: Player, timestamp: number) {
         if (this.members.indexOf(player) || player.group) {
             console.log('[GROUP] Player is already in a group.');
         } else {
@@ -90,67 +118,13 @@ class Group {
      * Clear up any methods and properties of the group.
      */
     _disbandGroup() {
-        // TODO: Cancel all invites.
-        Group.pool.slice(Group.pool.indexOf(this, 1));
-    }
-
-    /**
-     * Replace the current leader with the new leader.
-     *
-     * @param newLeader The player we want to set as the new leader.
-     */
-    _replaceLeader(newLeader?: Player) {
-        // If we've tried to select a leader.
-        if (newLeader) {
-            // If the player exists in the group, assign leadership.
-            if (this.members.indexOf(newLeader) !== -1) {
-                this.leader = newLeader;
-            } else {
-                console.log('[GROUP] Somehow trying to make someone a leader of a group they\'re not in.');
-            }
-        } else {
-            // The new leader is the first member to join the group.
-            this.leader = this.members[0];
-        }
-    }
-}
-
-/**
- * Try and invite a player to a group.
- *
- * @param inviter The inviting player.
- * @param _ Ignored fullText param.
- * @param invitee The invitee's search parameter.
- */
-export function groupInvite(inviter: PlayerMp, _:string, invitee: number|string) {
-    const players = Player.Search([inviter, invitee]);
-    const [invitingPlayer, invitedPlayer] = <Array<Player>>players;
-
-    const timestamp = 0; // TODO: Get unix timestamp.
-
-    if (invitingPlayer && invitedPlayer && invitingPlayer.group) {
-        invitedPlayer.groupInvites.push({
-            inviter: invitingPlayer,
-            group: invitingPlayer.group,
-            timestamp
+        this.invites.forEach((invite: GroupInvite ) => {
+            this.cancelInvite(invite.player);
         });
 
-        invitingPlayer.group._invite(invitedPlayer, timestamp);
-    } else {
-        console.log('[GROUP] groupInvite() has failed.');
+        Group.pool.slice(Group.pool.indexOf(this, 1));
     }
-}
-
-export function groupKick() {
-
-}
-
-export function groupLeave() {
-
-}
-
-export function groupPromote() {
-
 }
 
 export default Group;
+export {GroupInvite, PlayerGroupInvite} from './types';
