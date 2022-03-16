@@ -13,4 +13,4 @@ addCommand('guninvite', ['group'], GroupCommands.cancelInvite, ['gdeinvite']);
 addCommand('ginvites',       ['group'], GroupCommands.invites);
 addCommand('gmembers',       ['group'], GroupCommands.members,       ['gm']);
 addCommand('gacceptinvite',  ['group'], GroupCommands.acceptInvite,  ['ga', 'gaccept']);
-addCommand('gdeclineinvite', ['group'], GroupCommands.declineInvite, ['ga', 'gdecline']);
+addCommand('gdeclineinvite', ['group'], GroupCommands.declineInvite, ['gd', 'gdecline']);
