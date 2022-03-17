@@ -46,9 +46,9 @@ class Group {
             this.replaceLeader();
         }
 
-        // If the number of members is 0, remove the group.
-        if (this.members.length === 0) {
-            this._disbandGroup();
+        // If the number of members is 1, remove the group.
+        if (this.members.length === 1) {
+            this.disband();
         }
     }
 

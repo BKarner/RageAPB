@@ -1,18 +1,39 @@
 import './defs';
 
 import Player from '../../player';
+import {PlayerGroupInvite} from '../types';
 
-export function acceptInvite() {
+/**
+ * Accept an invite sent to the player.
+ *
+ * TODO: Needs output reformatting + security.
+ * TODO: Needs testing.
+ * @param player The player accepting the invite.
+ * @param _ Ignored fullText param.
+ * @param invite The invite to accept.
+ */
+export function acceptInvite(player: PlayerMp, _:string, invite: number|string) {
     // TODO: Accepting an invite.
 }
 
-export function declineInvite() {
+/**
+ * Decline an invite sent to the player.
+ *
+ * TODO: Needs output reformatting + security.
+ * TODO: Needs testing.
+ * @param player The player declining the invite.
+ * @param _ Ignored fullText param.
+ * @param invite The invite to decline.
+ */
+export function declineInvite(player: PlayerMp, _:string, invite: number|string) {
     // TODO: Declining an invite.
 }
 
 /**
  * Cancel a group invitation.
  *
+ * TODO: Needs output reformatting + security.
+ * TODO: Needs testing.
  * @param inviter The inviting player.
  * @param _ Ignored fullText param.
  * @param invitee The invitee's search parameter.
@@ -36,6 +57,8 @@ export function cancelInvite(inviter: PlayerMp, _:string, invitee: number|string
 /**
  * Try and invite a player to a group.
  *
+ * TODO: Needs output reformatting + security.
+ * TODO: Needs testing.
  * @param inviter The inviting player.
  * @param _ Ignored fullText param.
  * @param invitee The invitee's search parameter.
@@ -63,13 +86,38 @@ export function invite(inviter: PlayerMp, _:string, invitee: number|string) {
     }
 }
 
-export function invites() {
-    // TODO: Invites.
+/**
+ * Check the player's invites and print them out on screen.
+ *
+ * TODO: Needs output reformatting + security.
+ * TODO: Needs testing.
+ * @param player The player checking their invites.
+ */
+export function invites(player: PlayerMp) {
+    const checkingPlayer = <Player>Player.Search(player);
+
+    if (checkingPlayer) {
+        const group = checkingPlayer.group;
+        if (!group) {
+            return;
+        }
+
+        player.outputChatBox('GROUP INVITES --- ')
+        checkingPlayer.groupInvites.forEach((invite: PlayerGroupInvite, index: number) => {
+            const {inviter, group} = invite;
+
+            player.outputChatBox(`${inviter.name}\'s group (ID: ${index})`);
+        });
+    } else {
+        console.log('[GROUP] invites() has failed.');
+    }
 }
 
 /**
  * Kick a player from the group.
  *
+ * TODO: Needs output reformatting + security.
+ * TODO: Needs testing.
  * @param kicker The person attempting to kick the player.
  * @param _ The ignored fulltext param.
  * @param kickee The player being kicked.
@@ -92,10 +140,11 @@ export function kick(kicker: PlayerMp, _:string, kickee: number|string) {
 /**
  * Allow the player to leave their group, if they're in one.
  *
+ * TODO: Needs output reformatting + security.
+ * TODO: Needs testing.
  * @param player The player that wants to leave their group.
- * @param _ Ignored fullText param.
  */
-export function leave(player: PlayerMp, _:string) {
+export function leave(player: PlayerMp) {
     const leavingPlayer = <Player>Player.Search(player);
 
     if (leavingPlayer) {
@@ -110,13 +159,37 @@ export function leave(player: PlayerMp, _:string) {
     }
 }
 
-export function members() {
-    // TODO: Members
+/**
+ * Print out the members that are in the player's group.
+ *
+ * TODO: Needs output reformatting + security.
+ * TODO: Needs testing.
+ * @param player The player that wants to check their groups' members.
+ */
+export function members(player: PlayerMp) {
+    const checkingPlayer = <Player>Player.Search(player);
+
+    if (checkingPlayer) {
+        const group = checkingPlayer.group;
+        if (!group) {
+            return;
+        }
+
+        player.outputChatBox('GROUP MEMBERS --- ')
+        group.members.forEach((member: Player) => {
+            const {name, serverID} = member;
+            player.outputChatBox(`${(group.leader === member) ? '[LEADER] ' : ''}${name} (ID: ${serverID})`);
+        });
+    } else {
+        console.log('[GROUP] members() has failed.');
+    }
 }
 
 /**
  * Promote a group member to the group leader.
  *
+ * TODO: Needs output reformatting + security.
+ * TODO: Needs testing.
  * @param promoter The person who is trying to promote.
  * @param _ Ignored fullText param.
  * @param promotee The person being promoted.
