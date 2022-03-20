@@ -102,7 +102,7 @@ class Player {
             }
         });
 
-        return 0;
+        return Player.pool.length;
     }
 
     /**
@@ -120,23 +120,27 @@ class Player {
         if (Array.isArray(searchParams)) {
             const players: Array<Player|null|undefined> = [];
             for (const param of searchParams) {
-                if (<PlayerMp>param) {
+                if (typeof param === 'string') {
+                    if (!isNaN(Number(param))) {
+                        players.push(Player.pool.find((p) => p?.serverID === Number(param)));
+                    } else {
+                        players.push(Player.pool.find((p) => p?.name === param));
+                    }
+                } else if (<PlayerMp>param) {
                     players.push(Player.pool.find((p) => p?.ragePlayer === param));
-                } else if (typeof param === 'string') {
-                    players.push(Player.pool.find((p) => p?.name === param));
-                } else if (typeof param === 'number') {
-                    players.push(Player.pool.find((p) => p?.serverID === param));
                 }
             }
 
             return players;
         } else {
-            if (<PlayerMp>searchParams) {
-                return Player.pool.find((p) => p?.ragePlayer === searchParams);
-            } else if (typeof searchParams === 'string') {
+            if (typeof searchParams === 'string') {
+                if (!isNaN(Number(searchParams))) {
+                    return Player.pool.find((p) => p?.serverID === Number(searchParams));
+                }
+
                 return Player.pool.find((p) => p?.name === searchParams);
-            } else if (typeof searchParams === 'number') {
-                return Player.pool.find((p) => p?.serverID === searchParams);
+            } else if (<PlayerMp>searchParams) {
+                return Player.pool.find((p) => p?.ragePlayer === searchParams);
             }
         }
 

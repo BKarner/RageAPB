@@ -104,14 +104,10 @@ class Group {
      * @param timestamp The unix timestamp the invite was sent.
      */
     invite(player: Player, timestamp: number) {
-        if (this.members.indexOf(player) || player.group) {
-            console.log('[GROUP] Player is already in a group.');
-        } else {
-            this.invites.push({
-                player,
-                timestamp
-            });
-        }
+        this.invites.push({
+            player,
+            timestamp
+        });
     }
 
     /**

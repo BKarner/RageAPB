@@ -1,6 +1,8 @@
 import './defs';
 
+import Group from '../index';
 import Player from '../../player';
+
 import {PlayerGroupInvite} from '../types';
 
 /**
@@ -69,9 +71,17 @@ export function invite(inviter: PlayerMp, _:string, invitee: number|string) {
 
     if (invitingPlayer && invitedPlayer) {
         // The player is not in a group, do nothing.
-        const {group} = invitingPlayer;
-        if (!group) {
+        if (invitedPlayer.group) {
+            inviter.outputChatBox('Player is already in a group.');
+
             return;
+        }
+
+        // TODO: Do this better, only create the group if an invite is accepted.
+        let group = invitingPlayer.group;
+        if (!group) {
+            invitingPlayer.group = new Group(invitingPlayer);
+            group = invitingPlayer.group;
         }
 
         invitedPlayer.groupInvites.push({
@@ -80,9 +90,19 @@ export function invite(inviter: PlayerMp, _:string, invitee: number|string) {
             timestamp
         });
 
+        inviter.outputChatBox(`You have invited ${invitedPlayer.ragePlayer.name} to join your group.`);
+        invitedPlayer.ragePlayer.outputChatBox(`${inviter.name} has invited you to join their group.`);
+
         group.invite(invitedPlayer, timestamp);
     } else {
         console.log('[GROUP] invite() has failed.');
+        if (!invitingPlayer) {
+            console.log('[GROUP] no inviting player');
+        }
+
+        if (!invitedPlayer) {
+            console.log('[GROUP] no invited player');
+        }
     }
 }
 
@@ -97,11 +117,6 @@ export function invites(player: PlayerMp) {
     const checkingPlayer = <Player>Player.Search(player);
 
     if (checkingPlayer) {
-        const group = checkingPlayer.group;
-        if (!group) {
-            return;
-        }
-
         player.outputChatBox('GROUP INVITES --- ')
         checkingPlayer.groupInvites.forEach((invite: PlayerGroupInvite, index: number) => {
             const {inviter, group} = invite;
@@ -172,10 +187,11 @@ export function members(player: PlayerMp) {
     if (checkingPlayer) {
         const group = checkingPlayer.group;
         if (!group) {
+            player.outputChatBox(`You are not in a group.`);
             return;
         }
 
-        player.outputChatBox('GROUP MEMBERS --- ')
+        player.outputChatBox('GROUP MEMBERS --- ');
         group.members.forEach((member: Player) => {
             const {name, serverID} = member;
             player.outputChatBox(`${(group.leader === member) ? '[LEADER] ' : ''}${name} (ID: ${serverID})`);
