@@ -96,6 +96,7 @@ class Player {
      * @constructor
      */
     static GetNewServerID(): number {
+        // TODO: Does not empty when player leaves?
         Player.pool.forEach((player: Player|null, index: number) => {
             if (!player) {
                 return index;

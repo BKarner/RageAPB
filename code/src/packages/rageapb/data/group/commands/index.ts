@@ -16,6 +16,9 @@ import {PlayerGroupInvite} from '../types';
  */
 export function acceptInvite(player: PlayerMp, _:string, invite: number|string) {
     // TODO: Accepting an invite.
+
+    // TODO: If a group in PlayerGroupInvite doesn't exist, check if the player who invited it has formed a new group and is leader join that one.
+    // TODO: If the player who invited joined a different group where they are not leader, cancel the invite.
 }
 
 /**
@@ -69,41 +72,26 @@ export function invite(inviter: PlayerMp, _:string, invitee: number|string) {
     const [invitingPlayer, invitedPlayer] = <Array<Player>>Player.Search([inviter, invitee]);
     const timestamp = 0; // TODO: Get unix timestamp.
 
-    if (invitingPlayer && invitedPlayer) {
-        // The player is not in a group, do nothing.
-        if (invitedPlayer.group) {
-            inviter.outputChatBox('Player is already in a group.');
-
-            return;
-        }
-
-        // TODO: Do this better, only create the group if an invite is accepted.
-        let group = invitingPlayer.group;
-        if (!group) {
-            invitingPlayer.group = new Group(invitingPlayer);
-            group = invitingPlayer.group;
-        }
-
-        invitedPlayer.groupInvites.push({
-            inviter: invitingPlayer,
-            group,
-            timestamp
-        });
-
-        inviter.outputChatBox(`You have invited ${invitedPlayer.ragePlayer.name} to join your group.`);
-        invitedPlayer.ragePlayer.outputChatBox(`${inviter.name} has invited you to join their group.`);
-
-        group.invite(invitedPlayer, timestamp);
-    } else {
-        console.log('[GROUP] invite() has failed.');
-        if (!invitingPlayer) {
-            console.log('[GROUP] no inviting player');
-        }
-
-        if (!invitedPlayer) {
-            console.log('[GROUP] no invited player');
-        }
+    if (!invitedPlayer) {
+        inviter.outputChatBox('Could not find that player.');
+        return;
     }
+
+    // The player is not in a group, do nothing.
+    if (invitedPlayer.group) {
+        inviter.outputChatBox('Player is already in a group.');
+        return;
+    }
+
+    // Send the player the group invite.
+    invitedPlayer.groupInvites.push({
+        inviter: invitingPlayer,
+        timestamp
+    });
+
+    // Output our sent messages.
+    inviter.outputChatBox(`You have invited ${invitedPlayer.ragePlayer.name} to join your group.`);
+    invitedPlayer.ragePlayer.outputChatBox(`${inviter.name} has invited you to join their group.`);
 }
 
 /**

@@ -8,6 +8,12 @@ export type GroupInvite = {
 
 export type PlayerGroupInvite = {
     inviter: Player,
-    group: Group,
+    group?: Group,
+    timestamp: number
+}
+
+export type PlayerGroupInviteSent = {
+    invitee: Player,
+    group?: Group,
     timestamp: number
 }
