@@ -96,14 +96,17 @@ class Player {
      * @constructor
      */
     static GetNewServerID(): number {
-        // TODO: Does not empty when player leaves?
+        let newID = Player.pool.length;
+
         Player.pool.forEach((player: Player|null, index: number) => {
-            if (!player) {
-                return index;
+            if (player === null) {
+                newID = index;
+
+                return;
             }
         });
 
-        return Player.pool.length;
+        return newID;
     }
 
     /**
