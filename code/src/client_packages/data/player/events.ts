@@ -47,6 +47,8 @@ mp.events.add('render', (nametags) => {
     const screenRes = graphics.getScreenResolution(0, 0);
 
     nametags.forEach((nametag: any) => {
+        mp.gui.chat.push(JSON.stringify(nametag));
+
         let [player, x, y, distance] = nametag;
 
         if(distance <= maxDistance) {
