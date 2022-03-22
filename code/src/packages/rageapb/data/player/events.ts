@@ -20,3 +20,21 @@ mp.events.add('playerQuit', (player: PlayerMp) => {
     // Remove our new player from the pool.
     Player.pool[id] = null;
 });
+
+
+// TODO: Temp respawn/kill feed.
+mp.events.add('playerDeath', (player, reason, killer) => {
+    const deathName = player.name;
+    const killerName = killer?.name ?? 'Unknown';
+
+    if(reason == 341774354) {
+        mp.players.broadcast(`${deathName} died in a chopper!`);
+        return;
+    }
+
+    setTimeout(() => {
+        player.spawn(new mp.Vector3(player.position.x, player.position.y, player.position.z));
+    }, 3000)
+
+    mp.players.broadcast(`${killerName} killed ${deathName}. Reason: ${reason}`);
+});

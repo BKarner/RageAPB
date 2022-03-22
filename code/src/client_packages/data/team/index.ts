@@ -10,7 +10,9 @@ class Team {
 
     private readonly _id: number;
 
-    constructor(teamID: number) {
+    public enemyTeam?: number;
+
+    constructor(teamID: number, player: Player) {
         this._id = teamID;
 
         // Do nothing and let garbage collection pick it up.
@@ -20,6 +22,9 @@ class Team {
 
         // Add our team to the pool.
         Team.pool[teamID] = this;
+
+        // Add our first player to the team.
+        this.add(player);
     }
 
     /**

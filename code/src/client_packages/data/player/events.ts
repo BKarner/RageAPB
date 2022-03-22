@@ -2,6 +2,8 @@ import Player from './index';
 
 import * as rpc from 'rage-rpc';
 import * as LOGGER from '../../_debug/logger';
+import Team from '../team';
+import {invoke} from '../../natives';
 
 /**
  * When a player joins, create a player class for it.
@@ -32,12 +34,23 @@ mp.events.add('playerQuit', (player: PlayerMp) => {
     Player.pool.splice(id, 1);
 });
 
+// TODO: refactor this lmao.
+let damagedPlayersThisTick: number[] = [];
+let damagedPlayersPreviousTick: number[] = [];
+let damagedPlayersLastTick: number[] = [];
+
+mp.events.add('outgoingDamage', (source, target: EntityMp, player, weapon, bone, damage) => {
+    if (target.type === 'player') {
+        damagedPlayersThisTick.push(target.id);
+    }
+});
+
 /**
  * Add our custom name-tags.
  */
-mp.events.add('render', (nametags) => {
+mp.events.add('render', () => {
     // TODO: Refactor this.
-    const maxDistance = 1000;
+    const maxDistance = 50;
     const width = 0.03;
     const height = 0.0065;
     const border = 0.001;
@@ -46,32 +59,72 @@ mp.events.add('render', (nametags) => {
     const graphics = mp.game.graphics;
     const screenRes = graphics.getScreenResolution(0, 0);
 
-    nametags.forEach((nametag: any) => {
-        mp.gui.chat.push(JSON.stringify(nametag));
+    const streamedPlayers = mp.players.streamed;
+    streamedPlayers.forEach((player) => {
+        if (player === mp.players.local) {
+            return;
+        }
 
-        let [player, x, y, distance] = nametag;
+        const originPos = player.position;
+        const playerPos = mp.players.local.position;
+        const distance = originPos.subtract(playerPos).length();
 
-        if(distance <= maxDistance) {
-            // TODO: Fix x/y positioning.
+        const isTarget = mp.game.player.isFreeAimingAtEntity(player.handle) || mp.game.player.isTargettingEntity(player.handle);
+        const cantSeeTarget = mp.raycasting.testPointToPoint(playerPos, originPos, [player, mp.players.local], 17);
+
+        if (cantSeeTarget && !isTarget) {
+            return;
+        }
+
+        if (distance <= maxDistance || isTarget) {
             let scale = (distance / maxDistance);
-            y -= scale * (0.005 * (screenRes.y / screenRes.x));
-
-            let size = Math.min(1, Math.max(0, 1 - scale));
             let newColor = color;
 
-            // TODO: Change color based on team.
-            newColor[3] = 255 * size;
+            // Change our colour to match team.
+            const p = Player.pool.find((p) => p.ragePlayer === player);
+            if (p && p.team !== 0) {
+                if (p.team === Player.local.team) {
+                    newColor = [0, 255, 0, 255];
+                } else if (p && p.team === Team.pool[Player.local.team].enemyTeam) {
+                    newColor = [255, 165, 0, 255];
+                }
+            }
 
-            // TODO: Raytrace, only draw if heads can see eachother.
-            graphics.drawText(player.name.replace('_', ' '), [x, y], {
+            // Change our alpha based on distance, if we're not targeting the player.
+            if (!isTarget) {
+                const alpha = Math.min(1, Math.max(0, 1 - scale));
+                newColor[3] = 255 * alpha;
+            }
+
+            let newZ = originPos.z + 1.2;
+            let offset = (scale * ((screenRes.y / screenRes.x)));
+
+            // If our offset is -, we need to multiply it so it doesn't cover the body long distance.
+            if (offset >= 0.55) {
+                offset *= 2;
+            }
+
+            newZ += Math.abs(offset);
+
+            graphics.setDrawOrigin(originPos.x - 0.01, originPos.y, newZ, 0);
+            if (damagedPlayersThisTick.indexOf(player.id) !== -1 || damagedPlayersPreviousTick.indexOf(player.id) !== -1 || damagedPlayersLastTick.indexOf(player.id) !== -1) {
+                newColor = [255, 0, 0, 255];
+            }
+            graphics.drawText(player.name, [0, 0], {
                 font: 4,
-                // @ts-ignore
-                color: newColor,
+                color: newColor as RGBA,
                 scale: [0.4, 0.4],
                 outline: true
             });
+
+            // TODO: Add this hash to native / extend graphics.
+            invoke('0xFF0B610F6BE0D7AF', []);
         }
-    })
+    });
+
+    damagedPlayersLastTick = damagedPlayersPreviousTick;
+    damagedPlayersPreviousTick = damagedPlayersThisTick;
+    damagedPlayersThisTick = [];
 });
 
 /**
