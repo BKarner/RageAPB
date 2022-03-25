@@ -1,4 +1,6 @@
 import './events';
+import './nametags';
+import './rpc';
 
 import Team from '../team';
 
@@ -14,8 +16,6 @@ class Player {
 
     public readonly isClient: boolean = false;
     public readonly ragePlayer: PlayerMp;
-
-    private readonly _serverID?: number;
     private _team: number;
 
     constructor(ragePlayer: PlayerMp, client: boolean) {
@@ -24,6 +24,8 @@ class Player {
 
         // Assign our rage handle so that we can call any rage player stuff.
         this.ragePlayer = ragePlayer;
+
+        // TODO: Assign player ID from the player pool on the server.
 
         // Assign our player to the default team.
         this._team = TEAMS.PASSIVE;
@@ -59,7 +61,7 @@ class Player {
         // Create our team if it doesn't exist.
         let newTeam = Team.pool[id];
         if (!newTeam) {
-            newTeam = new Team(id);
+            newTeam = new Team(id, this);
         }
 
         // Add our team to the new team.

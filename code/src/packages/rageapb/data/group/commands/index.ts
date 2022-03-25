@@ -1,9 +1,10 @@
 import './defs';
 
-import Group from '../index';
 import Player from '../../player';
 
 import {PlayerGroupInvite} from '../types';
+
+// TODO: Completely revisit this.
 
 /**
  * Accept an invite sent to the player.
@@ -77,7 +78,7 @@ export function invite(inviter: PlayerMp, _:string, invitee: number|string) {
         return;
     }
 
-    // The player is not in a group, do nothing.
+    // The player is in a group, do nothing.
     if (invitedPlayer.group) {
         inviter.outputChatBox('Player is already in a group.');
         return;
@@ -107,7 +108,7 @@ export function invites(player: PlayerMp) {
     if (checkingPlayer) {
         player.outputChatBox('GROUP INVITES --- ')
         checkingPlayer.groupInvites.forEach((invite: PlayerGroupInvite, index: number) => {
-            const {inviter, group} = invite;
+            const {inviter} = invite;
 
             player.outputChatBox(`${inviter.name}\'s group (ID: ${index})`);
         });
