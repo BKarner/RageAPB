@@ -1,4 +1,4 @@
-import {WEAPONS} from '@shared/constants/weapons';
+import {WEAPONS} from '../../@shared/constants/weapons';
 
 /**
  * Forcefully spawn the player.
