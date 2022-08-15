@@ -1,6 +1,6 @@
 import Player from './index';
 
-import {DEATH_REASONS} from '../../constants/hashes';
+import {DEATH_REASONS} from '@shared/constants/hashes';
 
 /**
  * When a player joins, create a player class for it.
