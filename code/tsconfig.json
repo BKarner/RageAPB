@@ -10,7 +10,7 @@
   },
   "references": [
     {"path": "src/client"},
-    {"path": "src/packages"}
+    {"path": "src/server"}
   ],
   "exclude": [
     "node_modules",
