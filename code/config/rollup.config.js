@@ -33,14 +33,14 @@ function resolvePath(pathParts) {
  * Generate the config depending on if it's server or client.
  */
 function generateConfig({isServer} = {}) {
-    const tsConfigPath = resolvePath([SOURCE_PATH, isServer ? 'packages/' : 'client_packages', 'tsconfig.json']);
+    const tsConfigPath = resolvePath([SOURCE_PATH, isServer ? 'server' : 'client', 'tsconfig.json']);
     const external = [...builtinModules, ...localInstalledPackages];
 
     return {
         'inlineDynamicImports': true,
         'external': isServer ? [...external] : null,
 
-        'input': resolvePath([SOURCE_PATH, isServer ? 'packages/rageapb/': 'client_packages', 'index.ts']),
+        'input': resolvePath([SOURCE_PATH, isServer ? 'server': 'client', 'index.ts']),
         'output': isServer ? {
             'dir': `${BUILD_OUTPUT}/packages/rageapb`,
             'format': 'cjs'

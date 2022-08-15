@@ -3,14 +3,19 @@
   "compilerOptions": {
     "types": [],
     "moduleResolution": "node",
+    "rootDir": "src",
+    "baseUrl": "src",
+    "paths": {
+      "@shared/*": ["./@shared/*"]
+    },
 
     /* Basic Options */
     "target": "es2020",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
     "strict": true                            /* Enable all strict type-checking options. */
   },
   "references": [
-    {"path": "src/client_packages"},
-    {"path": "src/packages"}
+    {"path": "src/client"},
+    {"path": "src/server"}
   ],
   "exclude": [
     "node_modules",

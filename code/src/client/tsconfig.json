@@ -7,9 +7,10 @@
     "outDir": "../../../gamemode/client_packages",          /* Redirect output structure to the directory. */
   },
   "include": [
-    "./**/*"
+    "./**/*",
+    "../@shared/**/*"
   ],
   "exclude": [
-    "../packages/**/*"
+    "../server/**/*"
   ]
 }
