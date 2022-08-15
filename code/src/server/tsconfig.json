@@ -4,7 +4,7 @@
   "compilerOptions": {
     "composite": true,
     "types": ["@types/ragemp-s"],
-    "outDir": "../../../gamemode/packages",          /* Redirect output structure to the directory. */
+    "outDir": "../../../gamemode/packages/rageapb",          /* Redirect output structure to the directory. */
   },
   "include": [
     "./**/*"
