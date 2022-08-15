@@ -4,8 +4,10 @@ import Player from './index';
  * When a player joins the server, add it to our players.
  */
 mp.events.add('playerJoin', (player: PlayerMp) => {
-    console.log(`Creating Player object for ID: ${Player.GetNewServerID()}`);
-    new Player(player, Player.GetNewServerID());
+    const id = Player.GetNewServerID();
+    console.log(`Creating Player object for ID: ${id}`);
+
+    new Player(player, id);
 });
 
 /**
@@ -13,7 +15,16 @@ mp.events.add('playerJoin', (player: PlayerMp) => {
  */
 mp.events.add('playerQuit', (player: PlayerMp) => {
     const id = Player.pool.findIndex((e) => e?.ragePlayer === player);
+    console.log(`Releasing Player object for ID: ${id}`);
 
     // Remove our new player from the pool.
     Player.pool[id] = null;
+});
+
+
+// TODO: Temp respawn.
+mp.events.add('playerDeath', (player) => {
+    setTimeout(() => {
+        player.spawn(new mp.Vector3(player.position.x, player.position.y, player.position.z));
+    }, 3000);
 });

@@ -1,3 +1,5 @@
+import {addCommand} from '../lib/commandManager';
+
 // Creates a vehicle via admin command.
 function createVehicle(player: PlayerMp, vehId: string) {
     if (vehId.trim().length > 0) {
@@ -7,7 +9,7 @@ function createVehicle(player: PlayerMp, vehId: string) {
     else
         player.outputChatBox(`Command syntax:/aveh [vehicle_name]`);
 }
-mp.events.addCommand('aveh', createVehicle);
+addCommand('aveh', ['admin'], createVehicle);
 
 
 
