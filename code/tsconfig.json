@@ -9,7 +9,7 @@
     "strict": true                            /* Enable all strict type-checking options. */
   },
   "references": [
-    {"path": "src/client_packages"},
+    {"path": "src/client"},
     {"path": "src/packages"}
   ],
   "exclude": [
