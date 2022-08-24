@@ -111,14 +111,6 @@ function generateWebConfig({project} = {}) {
                 presets: ['@babel/preset-env', '@babel/preset-react'],
                 exclude: 'node_modules/**',
                 babelHelpers: 'bundled'
-            }),
-            serve({
-                open: true,
-                verbose: true,
-                contentBase: ['../gamemode/client_packages'],
-                historyApiFallback: true,
-                host: 'localhost',
-                port: 3000
             })
         ]
     };
