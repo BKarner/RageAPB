@@ -1,11 +1,8 @@
 import path from 'path';
 
-import jetpack, { copy } from 'fs-jetpack';
+import jetpack from 'fs-jetpack';
 
 import builtinModules from 'builtin-modules';
-
-import typescript from '@rollup/plugin-typescript';
-
 import jsonPlugin from '@rollup/plugin-json';
 import commonjsPlugin from '@rollup/plugin-commonjs';
 import typescriptPlugin from 'rollup-plugin-typescript2';
@@ -13,11 +10,6 @@ import nodeResolvePlugin from '@rollup/plugin-node-resolve';
 import tsPaths from 'rollup-plugin-tsconfig-paths';
 import replace from '@rollup/plugin-replace';
 import babel from '@rollup/plugin-babel';
-import serve from 'rollup-plugin-serve';
-import builtins from 'rollup-plugin-node-builtins';
-import globals from 'rollup-plugin-node-globals';
-import nodePolyfills from 'rollup-plugin-node-polyfills';
-import { terser } from 'rollup-plugin-terser';
 
 
 const pkgJson = jetpack.read('../package.json', 'json');
