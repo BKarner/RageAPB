@@ -6,7 +6,9 @@ import * as ALL_PAGES from './pages';
 import { createGlobalStyle } from 'styled-components';
 import { useImmer } from 'use-immer';
 import { UI_RPC } from '@shared/constants/rpc';
-import {useEventHandler} from './hooks';
+import { useEventHandler } from './hooks';
+
+console.log('test');
 
 const GlobalStyle = createGlobalStyle`
     body {

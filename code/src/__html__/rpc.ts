@@ -9,6 +9,7 @@ if (!glob.alt) {
 
 import rpc from 'rage-rpc';
 
+// @ts-ignore
 rpc.init('gta-apb')
 
 export default rpc;

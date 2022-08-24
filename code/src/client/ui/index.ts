@@ -6,7 +6,8 @@ import {UI_RPC} from '@shared/constants/rpc';
  * Instantiate our browser.
  */
 export const BROWSER = mp.browsers.new('package://index.html')
-show('Money');
+BROWSER.active = true;
+show('TEST_PAGE');
 
 export function trigger(name: string, args?: any) {
     if (!BROWSER) { return; }
