@@ -1,6 +1,7 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "jsx": "react",
     "types": [],
     "moduleResolution": "node",
     "rootDir": "src",
@@ -11,11 +12,13 @@
 
     /* Basic Options */
     "target": "es2020",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
-    "strict": true                            /* Enable all strict type-checking options. */
+    "strict": true,                            /* Enable all strict type-checking options. */
+    "allowSyntheticDefaultImports": true
   },
   "references": [
     {"path": "src/client"},
-    {"path": "src/server"}
+    {"path": "src/server"},
+    {"path": "src/__html__"}
   ],
   "exclude": [
     "node_modules",
