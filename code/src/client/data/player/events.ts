@@ -34,7 +34,7 @@ mp.events.add('playerQuit', (player: PlayerMp) => {
 /**
  * Make a kill-feed.
  *
- * // TODO: Move this over to a CEF or drawtext interface? Probably drawtext/sprite.
+ * // TODO: Move this over to a CEF or drawtext ui? Probably drawtext/sprite.
  */
 mp.events.add('playerDeath', (player: PlayerMp, reason: number, killer: PlayerMp) => {
     const {description} = DEATH_REASONS[reason];

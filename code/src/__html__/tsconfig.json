@@ -3,8 +3,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "types": ["@types/ragemp-c"],
+    "types": ["node"],
     "outDir": "../../../gamemode/client_packages",          /* Redirect output structure to the directory. */
+    "allowSyntheticDefaultImports": true,
     "jsx": "react"
   },
   "include": [
@@ -12,6 +13,7 @@
     "../@shared/**/*"
   ],
   "exclude": [
+    "../client/**/*",
     "../server/**/*"
   ]
 }
