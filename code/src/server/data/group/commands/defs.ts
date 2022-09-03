@@ -1,4 +1,4 @@
-import {addCommand} from '../../../lib/commandManager';
+import {addCommand} from '../../../@lib/commandManager';
 
 import * as GroupCommands from './index';
 
