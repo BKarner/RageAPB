@@ -5,7 +5,7 @@ import './rpc';
 import Team from '../team';
 
 import {TEAMS} from '../team/consts';
-import {SetPlayerTeam} from '../../natives/player';
+import {SetPlayerTeam} from '../../@natives/player';
 
 /**
  * Handles the Player class as appropriate.

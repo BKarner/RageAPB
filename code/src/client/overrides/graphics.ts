@@ -1,4 +1,4 @@
-import {invoke} from '../natives';
+import {invoke} from '../@natives';
 
 export type GameGraphicsMpEx = GameGraphicsMp & {
     clearDrawOrigin: Function
