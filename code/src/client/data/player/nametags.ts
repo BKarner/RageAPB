@@ -1,6 +1,8 @@
 import Player from './index';
 import Team from '../team';
 
+import {TEAM_COLORS} from '@shared/constants/colors';
+
 // Pull in our game graphics and override them.
 import {GameGraphicsMpEx} from '../../overrides/graphics';
 const GRAPHICS = mp.game.graphics as GameGraphicsMpEx;
@@ -13,14 +15,6 @@ type DamagedPlayers = {
 const TICKS_TO_DISPLAY = 3;
 const MAX_DISTANCE = 50;
 const DAMAGED_PLAYERS: DamagedPlayers[] = [];
-
-const TEAM_COLORS = {
-    // R - G - B - A
-    'FRIENDLY': [0, 255, 0, 255], // Green
-    'ENEMY'   : [255, 165, 0, 255], // Orange,
-    'HIT'     : [255, 0, 0, 255], // Damaged
-    'NEUTRAL' : [255, 255, 255, 255]
-}
 
 
 /**
@@ -45,12 +39,12 @@ function getTeamColor(player: PlayerMp) {
     if (!playerObj || playerObj.team === 0) { return TEAM_COLORS.NEUTRAL; }
 
     if (playerObj.team === Player.local.team) {
-        return TEAM_COLORS.FRIENDLY;
+        return playerObj.downed ? TEAM_COLORS.FRIENDLY_INJURED : TEAM_COLORS.FRIENDLY;
     }
 
     const {enemyTeam} = Team.pool[Player.local.team];
     if (playerObj.team === enemyTeam) {
-        return TEAM_COLORS.ENEMY;
+        return playerObj.downed ? TEAM_COLORS.ENEMY_INJURED : TEAM_COLORS.ENEMY;
     }
 
     return TEAM_COLORS.NEUTRAL;

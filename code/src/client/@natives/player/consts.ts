@@ -29,4 +29,7 @@ export const NATIVES: { [key: string]: string } = {
     'HasPlayerDamagedAtLeastOnePed': '0x20CE80B0C2BF4ACC', // TODO: Needs testing/implementation.
     'ClearPlayerHasDamagedAtLeastOneNonAnimalPed': '0x4AACB96203D11A31', // TODO: Needs testing/implementation.
     'HasPlayerDamagedAtLeastOneNonAnimalPed': '0xE4B90F367BD81752', // TODO: Needs testing/implementation.
+
+    // Graphics
+    'ClearDrawOrigin': '0xFF0B610F6BE0D7AF'
 }

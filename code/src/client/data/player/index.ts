@@ -16,7 +16,9 @@ class Player {
 
     public readonly isClient: boolean = false;
     public readonly ragePlayer: PlayerMp;
+
     private _team: number;
+    private _downed: boolean;
 
     constructor(ragePlayer: PlayerMp, client: boolean) {
         // Firstly, determine whether or not we're the client.
@@ -26,9 +28,8 @@ class Player {
         this.ragePlayer = ragePlayer;
 
         // TODO: Assign player ID from the player pool on the server.
-
-        // Assign our player to the default team.
         this._team = TEAMS.PASSIVE;
+        this._downed = false;
 
         // Add this to our current player pool.
         Player.pool.push(this);
@@ -68,6 +69,21 @@ class Player {
         this._team = id;
         SetPlayerTeam(this.ragePlayer, id);
         newTeam.add(this);
+    }
+
+    /**
+     * Get the player's downed status.
+     */
+    get downed(): boolean {
+        return this._downed;
+    }
+
+    /**
+     * Set the player's downed state.
+     * @param state
+     */
+    set downed(state: boolean) {
+        this._downed = state;
     }
 }
 
