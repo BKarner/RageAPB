@@ -5,7 +5,7 @@ import {log} from '../../_debug/logger';
  * Measure the outgoing damage for entities.
  */
 mp.events.add('outgoingDamage', (source: EntityMp, target: EntityMp, sourcePlayer: PlayerMp, weapon: number, boneIndex: number, damage: number) => {
-    if (target.type === 'player') {
+    if (target.type !== 'player') {
         log(`${sourcePlayer} dealt ${damage} damage to an entity. (Wep: ${weapon}, Bone: ${boneIndex})`);
     } else {
         const targetPlayer = target as PlayerMp;
