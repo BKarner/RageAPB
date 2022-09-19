@@ -11,3 +11,7 @@ type DeathReason = {
 export const DEATH_REASONS: {[key: string]: DeathReason} = {
     "453432689": {description: 'Pistol', icon: TEXTURES.WEAPONS.pistol},
 }
+
+export const PLAYER_BONES = {
+    '16': 'Head', '18': 'Head', '20': 'Head'
+}
