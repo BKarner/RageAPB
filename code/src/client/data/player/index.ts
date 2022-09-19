@@ -1,5 +1,4 @@
 import './events';
-import './nametags';
 import './rpc';
 
 import Team from '../team';

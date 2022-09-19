@@ -1,1 +1,2 @@
 import './injuries';
+import './nametags';

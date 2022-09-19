@@ -1,10 +1,11 @@
-import Player from './index';
-import Team from '../team';
+import Player from '../../data/player';
+import Team from '../../data/team';
 
 import {TEAM_COLORS} from '@shared/constants/colors';
 
 // Pull in our game graphics and override them.
 import {GameGraphicsMpEx} from '../../overrides/graphics';
+import {log} from '../../_debug/logger';
 const GRAPHICS = mp.game.graphics as GameGraphicsMpEx;
 
 type DamagedPlayers = {
@@ -110,10 +111,15 @@ mp.events.add('render', () => {
             GRAPHICS.setDrawOrigin(originPos.x - 0.01, originPos.y, calculateNewZ(originPos, scale), 0);
 
             // Check to see if we've damaged the player that's streamed. Then change their name-tag to red if we have done.
-            const damagedResult = DAMAGED_PLAYERS.find((e) => e.entity === player.id)
-            if (damagedResult) {
+            const damagedIndex = DAMAGED_PLAYERS.findIndex((e) => e.entity === player.id);
+            if (damagedIndex >= 0) {
+                const damagedResult = DAMAGED_PLAYERS[damagedIndex];
                 newColor = TEAM_COLORS.HIT;
                 damagedResult.ticksRemaining--;
+
+                if (damagedResult.ticksRemaining < 0) {
+                    DAMAGED_PLAYERS.splice(damagedIndex, 1);
+                }
             }
 
             // Draw the graphic above their head.
