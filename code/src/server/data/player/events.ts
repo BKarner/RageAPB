@@ -1,4 +1,5 @@
 import Player from './index';
+import {DEATH_REASONS} from '@shared/constants/hashes';
 
 /**
  * When a player joins the server, add it to our players.
@@ -23,8 +24,15 @@ mp.events.add('playerQuit', (player: PlayerMp) => {
 
 
 // TODO: Temp respawn.
-mp.events.add('playerDeath', (player) => {
+mp.events.add('playerDeath', (player, reason, killer) => {
+    const {description} = DEATH_REASONS[reason];
+    const killerName = killer?.name ?? 'Unknown';
+    const playerName = player?.name ?? 'Unknown';
+
+    mp.players.broadcast((`${killerName} killed ${playerName}. Reason: ${description}`));
+
     setTimeout(() => {
         player.spawn(new mp.Vector3(player.position.x, player.position.y, player.position.z));
     }, 3000);
 });
+

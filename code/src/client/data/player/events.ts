@@ -1,7 +1,5 @@
 import Player from './index';
 
-import {DEATH_REASONS} from '../../../@shared/constants/hashes';
-
 /**
  * When a player joins, create a player class for it.
  */
@@ -29,17 +27,4 @@ mp.events.add('playerQuit', (player: PlayerMp) => {
 
     // Remove our new player from the pool.
     Player.pool.splice(id, 1);
-});
-
-/**
- * Make a kill-feed.
- *
- * // TODO: Move this over to a CEF or drawtext ui? Probably drawtext/sprite.
- */
-mp.events.add('playerDeath', (player: PlayerMp, reason: number, killer: PlayerMp) => {
-    const {description} = DEATH_REASONS[reason];
-    const killerName = killer?.name ?? 'Unknown';
-    const playerName = player?.name ?? 'Unknown';
-
-    mp.gui.chat.push(`${killerName} killed ${playerName}. Reason: ${description}`);
 });

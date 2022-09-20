@@ -1,4 +1,4 @@
-import {addCommand} from '../lib/commandManager';
+import {addCommand} from '../@lib/commandManager';
 
 // Creates a vehicle via admin command.
 function createVehicle(player: PlayerMp, vehId: string) {

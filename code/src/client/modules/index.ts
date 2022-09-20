@@ -1,0 +1,2 @@
+import './injuries';
+import './nametags';

@@ -1,8 +1,11 @@
-import Player from './index';
-import Team from '../team';
+import Player from '../../data/player';
+import Team from '../../data/team';
+
+import {TEAM_COLORS} from '@shared/constants/colors';
 
 // Pull in our game graphics and override them.
 import {GameGraphicsMpEx} from '../../overrides/graphics';
+import {log} from '../../_debug/logger';
 const GRAPHICS = mp.game.graphics as GameGraphicsMpEx;
 
 type DamagedPlayers = {
@@ -11,16 +14,8 @@ type DamagedPlayers = {
 }
 
 const TICKS_TO_DISPLAY = 3;
-const MAX_DISTANCE = 50;
+const MAX_DISTANCE = 20;
 const DAMAGED_PLAYERS: DamagedPlayers[] = [];
-
-const TEAM_COLORS = {
-    // R - G - B - A
-    'FRIENDLY': [0, 255, 0, 255], // Green
-    'ENEMY'   : [255, 165, 0, 255], // Orange,
-    'HIT'     : [255, 0, 0, 255], // Damaged
-    'NEUTRAL' : [255, 255, 255, 255]
-}
 
 
 /**
@@ -45,12 +40,12 @@ function getTeamColor(player: PlayerMp) {
     if (!playerObj || playerObj.team === 0) { return TEAM_COLORS.NEUTRAL; }
 
     if (playerObj.team === Player.local.team) {
-        return TEAM_COLORS.FRIENDLY;
+        return playerObj.downed ? TEAM_COLORS.FRIENDLY_INJURED : TEAM_COLORS.FRIENDLY;
     }
 
     const {enemyTeam} = Team.pool[Player.local.team];
     if (playerObj.team === enemyTeam) {
-        return TEAM_COLORS.ENEMY;
+        return playerObj.downed ? TEAM_COLORS.ENEMY_INJURED : TEAM_COLORS.ENEMY;
     }
 
     return TEAM_COLORS.NEUTRAL;
@@ -66,13 +61,11 @@ function calculateNewZ(originPos: Vector3Mp, scale: number) {
     const { graphics } = mp.game;
     const screenRes = graphics.getScreenResolution(0, 0);
 
-    let newZ = originPos.z + 1.2;
+    let newZ = originPos.z + 1.0;
     let offset = (scale * ((screenRes.y / screenRes.x)));
 
     // If our offset is enough, we need to multiply it so it doesn't cover the body long distance.
-    if (offset >= 0.55) {
-        offset *= 2;
-    }
+    offset *= 1.1;
 
     newZ += Math.abs(offset);
     return newZ;
@@ -104,22 +97,29 @@ mp.events.add('render', () => {
             let scale = (distance / MAX_DISTANCE);
 
             // Change our colour to match team.
-            let newColor = getTeamColor(player)
+            let newColor = getTeamColor(player);
 
             // Change our alpha based on distance, if we're not targeting the player.
             if (!isTarget) {
                 const alpha = Math.min(1, Math.max(0, 1 - scale));
                 newColor[3] = 255 * alpha;
+            } else {
+                newColor[3] = 255;
             }
 
             // Set the draw origin to just above the player's head.
-            GRAPHICS.setDrawOrigin(originPos.x - 0.01, originPos.y, calculateNewZ(originPos, scale), 0);
+            GRAPHICS.setDrawOrigin(originPos.x, originPos.y, calculateNewZ(originPos, scale), 0);
 
             // Check to see if we've damaged the player that's streamed. Then change their name-tag to red if we have done.
-            const damagedResult = DAMAGED_PLAYERS.find((e) => e.entity === player.id)
-            if (damagedResult) {
+            const damagedIndex = DAMAGED_PLAYERS.findIndex((e) => e.entity === player.id);
+            if (damagedIndex >= 0) {
+                const damagedResult = DAMAGED_PLAYERS[damagedIndex];
                 newColor = TEAM_COLORS.HIT;
                 damagedResult.ticksRemaining--;
+
+                if (damagedResult.ticksRemaining < 0) {
+                    DAMAGED_PLAYERS.splice(damagedIndex, 1);
+                }
             }
 
             // Draw the graphic above their head.
