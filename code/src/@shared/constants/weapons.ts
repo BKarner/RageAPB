@@ -66,7 +66,7 @@ export const WEAPONS: {[key: string]: WeaponSettings} = {
     'PISTOL': {
         'name': 'pistol',
         'id': 'weapon_pistol',
-        'hash': 0,
+        'hash': 0x1B06D571,
         'magazineSize': {
             'stock': 12,
             'extended': 16
@@ -91,7 +91,7 @@ export const WEAPONS: {[key: string]: WeaponSettings} = {
     'ASSAULT_RIFLE': {
         'name': 'assault rifle',
         'id': 'weapon_assaultrifle',
-        'hash': 0,
+        'hash': 0xBFEFFF6D,
         'magazineSize': {
             'stock': 30,
             'extended': 60,
@@ -111,12 +111,5 @@ export const WEAPONS: {[key: string]: WeaponSettings} = {
             }
         },
         'reserveAmmo': 1800
-    }
-}
-
-// Pre-hash all of our weapons.
-for (const [name, weapon] of Object.entries(WEAPONS)) {
-    if (!weapon.hash) {
-        weapon.hash = mp.joaat(weapon.id);
     }
 }
