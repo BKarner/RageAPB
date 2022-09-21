@@ -17,7 +17,7 @@ type VehicleWheelComponent = VehicleComponent & {
     tyre: VehicleComponent
 }
 
-type VehicleSettings = {
+export type VehicleSettings = {
     name: string,
     id: string,
     hash: number,
