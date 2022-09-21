@@ -36,9 +36,6 @@ interface Pages {
 
 function Main() {
     const [pages, setPages] = useImmer<Pages>({ });
-    // setPages(draft => {
-    //     draft['TEST_PAGE'] = {}
-    // });
 
     function showActivePages() {
         return Object.entries(pages).map(([name, props]) => {
