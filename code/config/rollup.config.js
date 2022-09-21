@@ -10,6 +10,7 @@ import nodeResolvePlugin from '@rollup/plugin-node-resolve';
 import tsPaths from 'rollup-plugin-tsconfig-paths';
 import replace from '@rollup/plugin-replace';
 import babel from '@rollup/plugin-babel';
+import { copy } from '@web/rollup-plugin-copy';
 
 
 const pkgJson = jetpack.read('../package.json', 'json');
@@ -48,6 +49,9 @@ const OUTPUTS = {
         'file': `${BUILD_OUTPUT}/client_packages/__index.mjs`,
         'format': 'iife',
         'sourcemap': true,
+    },
+    'ASSETS': {
+        'dir': `${BUILD_OUTPUT}/client_packages/assets`
     }
 }
 
@@ -108,8 +112,20 @@ function generateWebConfig({project} = {}) {
     };
 }
 
+/**
+ * Generate the config for the web.
+ */
+function generateAssetsConfig({project} = {}) {
+    return {
+        'input': resolvePath([SOURCE_PATH, PATHS.WEB, 'assets/index.js']),
+        'output': OUTPUTS[project],
+        'plugins': [copy({ patterns: '**/*.{svg,jpg,json,png}' , rootDir: resolvePath([SOURCE_PATH, PATHS.WEB, 'assets']),  })]
+    }
+}
+
 export default [
     generateSourceConfig({project: 'SERVER'}),
     generateSourceConfig({project: 'CLIENT'}),
-    generateWebConfig({project: 'WEB'})
+    generateWebConfig({project: 'WEB'}),
+    generateAssetsConfig({project: 'ASSETS'})
 ];
