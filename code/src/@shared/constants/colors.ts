@@ -34,29 +34,23 @@ export const CHAT_COLORS = {
 
 type RGBA = [number, number, number, number];
 export function RGBAToHex(colours: RGBA): string {
-
+    return '';
 }
 
 /**
- * // TODO: FIX
- * @param colour
- * @constructor
+ * Convert a HTML compatible hex/hash value to an RGBA formatted array.
+ * 
+ * @param colour - The stringified hex value.
  */
 export function HexToRGBA(colour: string) : RGBA {
     if (!/^#([A-Fa-f0-9]{3}){1,2}$/.test(colour) && !/^#([A-Fa-f0-9]{4}){1,2}$/.test(colour)) {
         return [-1, -1, -1, -1];
     }
 
-    let c = colour.substring(1).split('');
-    if (c.length >= 3) {
-        c = [c[0], c[0], c[1], c[1], c[2], c[2], c[3] ?? 'FF', c[3] ?? 'FF'];
-    }
-
-    const hash: number = Number('0x' + c.join(''))
     return [
-        (hash >> 32) & 255,
-        (hash >> 16) & 255,
-        (hash >> 8) & 255,
-        hash &255
+        parseInt(colour.substring(1, 3), 16),
+        parseInt(colour.substring(3, 5), 16),
+        parseInt(colour.substring(5, 7), 16),
+        parseInt(colour.substring(7, 9), 16),
     ]
 }
