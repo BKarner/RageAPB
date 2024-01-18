@@ -1,7 +1,5 @@
 import React from 'react';
-import { useGlobal } from 'reactn';
 import styled from 'styled-components';
-import {vh, vw} from '../../utils/common';
 import {VehicleSettings} from '@shared/constants/vehicles';
 
 interface RowProps {

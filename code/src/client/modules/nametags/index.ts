@@ -64,7 +64,7 @@ function calculateNewZ(originPos: Vector3Mp, scale: number) {
     let newZ = originPos.z + 1.0;
     let offset = (scale * ((screenRes.y / screenRes.x)));
 
-    // If our offset is enough, we need to multiply it so it doesn't cover the body long distance.
+    // If our offset is enough, we need to multiply it, so it doesn't cover the body long distance.
     offset *= 1.1;
 
     newZ += Math.abs(offset);
@@ -76,7 +76,7 @@ function calculateNewZ(originPos: Vector3Mp, scale: number) {
  */
 mp.events.add('render', () => {
     const streamedPlayers = mp.players.streamed;
-    streamedPlayers.forEach((player) => {
+    streamedPlayers.forEach((player: PlayerMp) => {
         if (player === mp.players.local) {
             return;
         }
@@ -85,6 +85,8 @@ mp.events.add('render', () => {
         const playerPos = mp.players.local.position;
 
         const isTarget = mp.game.player.isFreeAimingAtEntity(player.handle) || mp.game.player.isTargettingEntity(player.handle);
+
+        // @ts-ignore
         const cantSeeTarget = mp.raycasting.testPointToPoint(playerPos, originPos, [player, mp.players.local], 17);
 
         if (cantSeeTarget && !isTarget) {

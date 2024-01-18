@@ -23,6 +23,8 @@ rpc.register(PLAYER_RPC.EXAMINE_VEHICLE, () => {
     log('FOUND VEHICLE');
 
     const model = mp.game.vehicle.getDisplayNameFromVehicleModel(vehicleAct.model);
+    log(model);
+
     const tempProperties = VEHICLES[model];
 
     show('VEHICLE_EXAMINE', tempProperties);

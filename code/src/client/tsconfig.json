@@ -1,6 +1,7 @@
 {
   "compileOnSave": true,
   "extends": "../../tsconfig.json",
+  "skipLibCheck": true,
   "compilerOptions": {
     "composite": true,
     "types": ["@types/ragemp-c"],
